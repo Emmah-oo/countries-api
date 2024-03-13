@@ -1,13 +1,32 @@
 "use client";
 import Header from "@/components/Header";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { SlArrowRight } from "react-icons/sl";
 import { CiSearch } from "react-icons/ci";
+import { getCountries } from "@/lib/data";
 // import Button from "@/components/Button";
 
 export default function Home() {
   const [isOpen, setIsOpen] = useState(false);
+  const [countries, setCountries] = useState([]);
+  // const countries = await getCountries()
+  // console.log(countries)
+
+  useEffect(() => {
+    const fetchCountries = async () => {
+      try {
+        const data = await getCountries();
+        console.log(data);
+        setCountries(data);
+      } catch (error) {
+        throw new Error(`Error getting data for countries`);
+      }
+    };
+
+    fetchCountries();
+  }, []);
+
   return (
     <main className="">
       <Header />
