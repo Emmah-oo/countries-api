@@ -18,6 +18,7 @@ export default function Home({
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const [countries, setCountries] = useState<CountryType[]>([]);
+  const [filteredResult, setFilteredResult] = useState<CountryType[]>([]);
   const query = searchParams?.query || "";
 
   useEffect(() => {
@@ -53,10 +54,11 @@ export default function Home({
 
   const filterByRegion = async (region: string) => {
     try {
-      const data: CountryType[] = await getCountries();
-      const limit = data.slice(0, 30);
+      setFilteredResult(countries);
+      const limit = filteredResult.slice(0, 30);
       const filteredData = limit.filter((country) => country.region === region);
       setCountries(filteredData);
+      console.log("filtered data", filteredResult);
       setIsOpen(!isOpen);
     } catch (error) {
       throw new Error(`Error getting data for countries`);
