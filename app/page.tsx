@@ -5,20 +5,23 @@ import { useState, useEffect } from "react";
 import { SlArrowRight } from "react-icons/sl";
 import { CiSearch } from "react-icons/ci";
 import { getCountries } from "@/lib/data";
+import Country from "@/components/Country";
 // import Button from "@/components/Button";
+import { CountryType } from "@/lib/definitions";
 
 export default function Home() {
   const [isOpen, setIsOpen] = useState(false);
-  const [countries, setCountries] = useState([]);
+  const [countries, setCountries] = useState<CountryType[]>([]);
   // const countries = await getCountries()
   // console.log(countries)
 
   useEffect(() => {
     const fetchCountries = async () => {
       try {
-        const data = await getCountries();
-        console.log(data);
-        setCountries(data);
+        const data: CountryType[] = await getCountries();
+        const limit = data.slice(0, 30);
+        console.log(limit);
+        setCountries(limit);
       } catch (error) {
         throw new Error(`Error getting data for countries`);
       }
@@ -74,6 +77,13 @@ export default function Home() {
               </div>
             </div>
           )}
+        </div>
+
+        <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+          {countries &&
+            countries.map((country) => (
+              <Country key={country.name.official} country={country} />
+            ))}
         </div>
       </div>
     </main>
