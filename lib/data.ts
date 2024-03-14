@@ -4,8 +4,8 @@ export const getCountries = async () => {
   return data.json();
 };
 
-export const getCountriesByRegion = async (region: string) => {
-  const data = await fetch(`https://restcountries.com/v3.1/region/{region}`);
+export const getCountryByName = async (name: string) => {
+  const data = await fetch(`https://restcountries.com/v3.1/name/${name}`);
 
   return data.json();
 };

@@ -3,19 +3,22 @@ import Header from "@/components/Header";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { SlArrowRight } from "react-icons/sl";
-import { CiSearch } from "react-icons/ci";
-import { getCountries } from "@/lib/data";
+
+import { getCountries, getCountryByName } from "@/lib/data";
 import Country from "@/components/Country";
 // import Button from "@/components/Button";
 import { CountryType } from "@/lib/definitions";
 import { filterData } from "@/lib/utils";
+import Search from "@/components/Search";
 
-export default function Home() {
+export default function Home({
+  searchParams,
+}: {
+  searchParams?: { query?: string };
+}) {
   const [isOpen, setIsOpen] = useState(false);
   const [countries, setCountries] = useState<CountryType[]>([]);
-  const [region, setRegion] = useState('')
-  // const countries = await getCountries()
-  // console.log(countries)
+  const query = searchParams?.query || "";
 
   useEffect(() => {
     const fetchCountries = async () => {
@@ -32,13 +35,29 @@ export default function Home() {
     fetchCountries();
   }, []);
 
+  useEffect(() => {
+    if (query) {
+      const fetchCountriesByName = async () => {
+        try {
+          const data: CountryType[] = await getCountryByName(query);
+          console.log(data);
+          setCountries(data);
+        } catch (error: any) {
+          throw new Error(`Error getting countries ${error.message}`);
+        }
+      };
+
+      fetchCountriesByName();
+    }
+  }, [query]);
+
   const filterByRegion = async (region: string) => {
     try {
       const data: CountryType[] = await getCountries();
       const limit = data.slice(0, 30);
       const filteredData = limit.filter((country) => country.region === region);
       setCountries(filteredData);
-      setIsOpen(!isOpen)
+      setIsOpen(!isOpen);
     } catch (error) {
       throw new Error(`Error getting data for countries`);
     }
@@ -50,14 +69,7 @@ export default function Home() {
 
       <div className="w-[90%] m-auto">
         <div className="flex flex-col md:flex-row justify-between">
-          <div className="w-[100%] flex items-center gap-5 shadow-md mt-8 px-6 py-3 md:w-[40%]">
-            <CiSearch size={25} />
-            <input
-              type="search"
-              placeholder="Search for a country..."
-              className="w-full outline-none"
-            />
-          </div>
+          <Search />
           <div className="relative inline-block text-left mt-10">
             <div>
               <button
@@ -91,7 +103,7 @@ export default function Home() {
 
         <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
           {countries &&
-            countries.map((country) => (
+            countries?.map((country) => (
               <Country key={country.name.official} country={country} />
             ))}
         </div>
