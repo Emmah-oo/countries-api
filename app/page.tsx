@@ -18,7 +18,8 @@ export default function Home({
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const [countries, setCountries] = useState<CountryType[]>([]);
-  const [filteredResult, setFilteredResult] = useState<CountryType[]>([]);
+  const [filteredCountries, setFilteredCountries] = useState<CountryType[]>([]);
+  const [activeRegion, setActiveRegion] = useState<string | null>(null);
   const query = searchParams?.query || "";
 
   useEffect(() => {
@@ -52,18 +53,20 @@ export default function Home({
     }
   }, [query]);
 
-  const filterByRegion = async (region: string) => {
-    try {
-      setFilteredResult(countries);
-      const limit = filteredResult.slice(0, 30);
-      const filteredData = limit.filter((country) => country.region === region);
-      setCountries(filteredData);
-      console.log("filtered data", filteredResult);
-      setIsOpen(!isOpen);
-    } catch (error) {
-      throw new Error(`Error getting data for countries`);
-    }
+  const filterByRegion = (region: string) => {
+    const filteredData = countries.filter(
+      (country) => country.region === region
+    );
+    setFilteredCountries(filteredData);
+    setActiveRegion(region);
+    setIsOpen(false); // Close the dropdown after selecting a region
   };
+
+  const resetFilter = () => {
+    setFilteredCountries([]);
+    setActiveRegion(null);
+  };
+  // TODO: Filter is running only once, when the page loads and you filter by region, it works once then stops working
 
   return (
     <main className="">
@@ -92,7 +95,11 @@ export default function Home({
                     <h1
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                       key={data}
-                      onClick={() => filterByRegion(data)}
+                      onClick={() =>
+                        activeRegion === data
+                          ? resetFilter()
+                          : filterByRegion(data)
+                      }
                     >
                       {data}
                     </h1>
@@ -104,10 +111,9 @@ export default function Home({
         </div>
 
         <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-          {countries &&
-            countries?.map((country) => (
-              <Country key={country.name.official} country={country} />
-            ))}
+          {(activeRegion ? filteredCountries : countries).map((country) => (
+            <Country key={country.name.official} country={country} />
+          ))}
         </div>
       </div>
     </main>

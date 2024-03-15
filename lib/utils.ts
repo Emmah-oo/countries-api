@@ -1,1 +1,1 @@
-export const filterData = ["Africa", "America", "Asia", "Europe", "Oceanic"];
+export const filterData = ["Africa", "Americas", "Asia", "Europe", "Oceania"];
