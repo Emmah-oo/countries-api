@@ -20,6 +20,7 @@ export default function Home({
   const [countries, setCountries] = useState<CountryType[]>([]);
   const [filteredCountries, setFilteredCountries] = useState<CountryType[]>([]);
   const [activeRegion, setActiveRegion] = useState<string | null>(null);
+  const [error, setError] = useState("");
   const query = searchParams?.query || "";
 
   useEffect(() => {
@@ -30,7 +31,7 @@ export default function Home({
         console.log(limit);
         setCountries(limit);
       } catch (error) {
-        throw new Error(`Error getting data for countries`);
+        setError("No country to display");
       }
     };
 
@@ -44,13 +45,12 @@ export default function Home({
         if (query) {
           data = await getCountryByName(query);
           console.log(data);
-          setCountries(data.slice(0, 30));
         } else {
           data = await getCountries();
-          setCountries(data.slice(0, 30));
         }
+        setCountries(data.slice(0, 30));
       } catch (error: any) {
-        throw new Error(`Error getting countries ${error.message}`);
+        setError("No country to display");
       }
     };
 
@@ -114,11 +114,15 @@ export default function Home({
           </div>
         </div>
 
-        <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-          {(activeRegion ? filteredCountries : countries).map((country) => (
-            <Country key={country.name.official} country={country} />
-          ))}
-        </div>
+        {filteredCountries || countries ? (
+          <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+            {(activeRegion ? filteredCountries : countries).map((country) => (
+              <Country key={country.name.official} country={country} />
+            ))}
+          </div>
+        ) : (
+          <p>{error || "Loading..."}</p>
+        )}
       </div>
     </main>
   );
