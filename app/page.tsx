@@ -38,19 +38,23 @@ export default function Home({
   }, []);
 
   useEffect(() => {
-    if (query) {
-      const fetchCountriesByName = async () => {
-        try {
-          const data: CountryType[] = await getCountryByName(query);
+    const fetchCountriesByName = async () => {
+      try {
+        let data: CountryType[] = [];
+        if (query) {
+          data = await getCountryByName(query);
           console.log(data);
-          setCountries(data);
-        } catch (error: any) {
-          throw new Error(`Error getting countries ${error.message}`);
+          setCountries(data.slice(0, 30));
+        } else {
+          data = await getCountries();
+          setCountries(data.slice(0, 30));
         }
-      };
+      } catch (error: any) {
+        throw new Error(`Error getting countries ${error.message}`);
+      }
+    };
 
-      fetchCountriesByName();
-    }
+    fetchCountriesByName();
   }, [query]);
 
   const filterByRegion = (region: string) => {
