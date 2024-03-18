@@ -42,7 +42,7 @@ const page = async ({ params }: { params: { id: string } }) => {
                 <div className="flex gap-1">
                   {Object.entries(country.name.nativeName).map(
                     ([key, value]) => (
-                      <h1 key={key} className="text-slate-700 font-thin">
+                      <h1 key={key} className="font-thin">
                         {(value as { common: string }).common}
                       </h1>
                     )
@@ -53,7 +53,7 @@ const page = async ({ params }: { params: { id: string } }) => {
               <div className="flex gap-1">
                 <h1>Population:</h1>
                 {""}
-                <h2 className="text-slate-700 font-thin">
+                <h2 className="font-thin">
                   {country.population.toLocaleString()}
                 </h2>
               </div>
@@ -61,21 +61,19 @@ const page = async ({ params }: { params: { id: string } }) => {
               <div className="flex gap-1">
                 <h1>Region:</h1>
                 {""}
-                <h2 className="text-slate-700 font-thin">{country.region}</h2>
+                <h2 className="font-thin">{country.region}</h2>
               </div>
 
               <div className="flex gap-1">
                 <h1>Sub Region:</h1>
                 {""}
-                <h2 className="text-slate-700 font-thin">
-                  {country.subregion}
-                </h2>
+                <h2 className="font-thin">{country.subregion}</h2>
               </div>
 
               <div className="flex gap-1">
                 <h1>Capital:</h1>
                 {""}
-                <h2 className="text-slate-700 font-thin">{country.capital}</h2>
+                <h2 className="font-thin">{country.capital}</h2>
               </div>
             </div>
 
@@ -83,7 +81,7 @@ const page = async ({ params }: { params: { id: string } }) => {
               <div className="flex gap-1">
                 <h1>Top Level Domain:</h1>
                 {""}
-                <h2 className="text-slate-700 font-thin">{country.tld}</h2>
+                <h2 className="font-thin">{country.tld}</h2>
               </div>
 
               <div className="flex gap-1">
@@ -91,7 +89,7 @@ const page = async ({ params }: { params: { id: string } }) => {
                 {""}
                 <div>
                   {Object.entries(country.currencies).map(([key, value]) => (
-                    <h1 key={key} className="text-slate-700 font-thin">
+                    <h1 key={key} className="font-thin">
                       {(value as { name: string }).name}
                     </h1>
                   ))}
@@ -101,7 +99,7 @@ const page = async ({ params }: { params: { id: string } }) => {
                 <h1>Languages:</h1>
                 <div className="flex gap-1">
                   {Object.entries(country.languages).map(([key, value]) => (
-                    <h1 key={key} className="text-slate-700 font-thin">
+                    <h1 key={key} className="font-thin">
                       {value as string}
                     </h1>
                   ))}

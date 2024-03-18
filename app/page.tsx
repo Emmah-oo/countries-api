@@ -6,7 +6,7 @@ import { SlArrowRight } from "react-icons/sl";
 
 import { getCountries, getCountryByName } from "@/lib/data";
 import Country from "@/components/Country";
-// import Button from "@/components/Button";
+import { useTheme } from "next-themes";
 import { CountryType } from "@/lib/definitions";
 import { filterData } from "@/lib/utils";
 import Search from "@/components/Search";
@@ -22,6 +22,8 @@ export default function Home({
   const [activeRegion, setActiveRegion] = useState<string | null>(null);
   const [error, setError] = useState("");
   const query = searchParams?.query || "";
+
+  const { setTheme, resolvedTheme } = useTheme();
 
   useEffect(() => {
     const fetchCountries = async () => {
@@ -75,7 +77,6 @@ export default function Home({
   return (
     <main className="">
       <Header />
-
       <div className="w-[90%] m-auto">
         <div className="flex flex-col md:flex-row justify-between">
           <Search />
@@ -83,7 +84,7 @@ export default function Home({
             <div>
               <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="flex items-center justify-between gap-10 text-black px-9 py-4 rounded focus:outline-none focus:shadow-outline shadow-md"
+                className="flex items-center justify-between gap-10 px-9 py-4 rounded focus:outline-none focus:shadow-outline shadow-md"
               >
                 Filter By Region
                 <SlArrowRight
@@ -93,11 +94,17 @@ export default function Home({
               </button>
             </div>
             {isOpen && (
-              <div className="origin-top-right absolute mt-2 w-60 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+              <div
+                className={`origin-top-right absolute mt-2 w-60 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 ${
+                  resolvedTheme === "light"
+                    ? "bg-white text-black"
+                    : "bg-slate-950 text-white"
+                }`}
+              >
                 <div className="py-1">
                   {filterData.map((data) => (
                     <h1
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      className="block px-4 py-2 text-sm "
                       key={data}
                       onClick={() =>
                         activeRegion === data

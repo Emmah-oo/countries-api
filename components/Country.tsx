@@ -20,20 +20,18 @@ const Country = ({ country }: { country: CountryType }) => {
           <h1 className="mb-5 font-bold text-[1.2rem]">
             {country.name.common}
           </h1>
-          <p className=" text-slate-600">
+          <p className=" ">
             {" "}
-            <span className="font-medium text-black">Population</span>:{" "}
+            <span className="font-medium">Population</span>:{" "}
             {country.population.toLocaleString()}
           </p>
-          <p className="text-slate-600">
+          <p className="">
             {" "}
-            <span className="font-medium text-black">Region:</span>{" "}
-            {country.region}
+            <span className="font-medium">Region:</span> {country.region}
           </p>
-          <p className="text-slate-600">
+          <p className="">
             {" "}
-            <span className="font-medium text-black">Capital:</span>{" "}
-            {country.capital}
+            <span className="font-medium">Capital:</span> {country.capital}
           </p>
         </div>
       </div>

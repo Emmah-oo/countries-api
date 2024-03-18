@@ -21,7 +21,7 @@ const Search = () => {
       <input
         type="search"
         placeholder="Search for a country..."
-        className="w-full outline-none"
+        className="w-full outline-none bg-transparent"
         onChange={(e) => handleSearch(e.target.value)}
         defaultValue={searchParams.get('query')?.toString()}
       />
